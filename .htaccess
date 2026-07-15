@@ -1,5 +1,26 @@
+# Enable MIME types for modern web files
+AddType application/javascript .mjs
+AddType application/javascript .js
+AddType text/css .css
+AddType application/json .json
+AddType image/svg+xml .svg
+AddType font/woff2 .woff2
+AddType font/woff .woff
+
 RewriteEngine On
 
-# Serve all requests from the out/ directory
-RewriteCond %{REQUEST_URI} !^/out/
+# If the request matches a real file in out/, serve it directly
+RewriteCond %{DOCUMENT_ROOT}/out%{REQUEST_URI} -f
 RewriteRule ^(.*)$ /out/$1 [L]
+
+# If the request matches a real directory in out/, serve it
+RewriteCond %{DOCUMENT_ROOT}/out%{REQUEST_URI} -d
+RewriteCond %{DOCUMENT_ROOT}/out%{REQUEST_URI}/index.html -f
+RewriteRule ^(.*)$ /out/$1/index.html [L]
+
+# For clean URLs, try .html extension in out/
+RewriteCond %{DOCUMENT_ROOT}/out%{REQUEST_URI}.html -f
+RewriteRule ^(.*)$ /out/$1.html [L]
+
+# Default: serve out/index.html for root
+RewriteRule ^$ /out/index.html [L]
