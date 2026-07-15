@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
   try {
@@ -11,7 +10,6 @@ export async function POST(req: Request) {
     }
 
     const messageData = {
-      id: Date.now().toString(),
       name,
       email,
       subject,
@@ -20,30 +18,53 @@ export async function POST(req: Request) {
       recipient: "trueclickseo@gmail.com"
     };
 
-    // Save locally to public/contact_messages.json so they never lose messages
-    const logPath = path.join(process.cwd(), "public", "contact_messages.json");
-    let messages = [];
+    // Print to Vercel console logs (always visible in your Vercel Dashboard logs tab!)
+    console.log(`[CONTACT FORM INQUIRY]:`, messageData);
 
-    if (fs.existsSync(logPath)) {
-      try {
-        const fileContent = fs.readFileSync(logPath, "utf8");
-        messages = JSON.parse(fileContent);
-      } catch (err) {
-        messages = [];
-      }
+    // If SMTP Env Variables are configured in Vercel, send the actual email!
+    const smtpHost = process.env.SMTP_HOST || "smtp.gmail.com";
+    const smtpPort = Number(process.env.SMTP_PORT) || 465;
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASS;
+
+    if (smtpUser && smtpPass) {
+      const transporter = nodemailer.createTransport({
+        host: smtpHost,
+        port: smtpPort,
+        secure: smtpPort === 465,
+        auth: {
+          user: smtpUser,
+          pass: smtpPass,
+        },
+      });
+
+      await transporter.sendMail({
+        from: `"${name}" <${smtpUser}>`,
+        to: "trueclickseo@gmail.com",
+        replyTo: email,
+        subject: `[My PDF Image Contact] ${subject}`,
+        text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+        html: `
+          <h3>New Message from My PDF Image</h3>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Subject:</strong> ${subject}</p>
+          <p><strong>Message:</strong></p>
+          <p style="white-space: pre-wrap; background: #f4f4f5; padding: 12px; border-radius: 6px;">${message}</p>
+        `,
+      });
+      
+      console.log("Email dispatched successfully via SMTP.");
+    } else {
+      console.log("SMTP environment variables not set. Email not dispatched, logged to console instead.");
     }
-
-    messages.push(messageData);
-    fs.writeFileSync(logPath, JSON.stringify(messages, null, 2), "utf8");
-
-    // Print to console logs for local review
-    console.log(`[CONTACT FORM] Message received for trueclickseo@gmail.com:`, messageData);
 
     return NextResponse.json({ 
       success: true, 
-      message: "Message received. Notification saved locally." 
+      message: "Message received successfully." 
     });
   } catch (error: any) {
+    console.error("Contact Form Error:", error);
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
