@@ -20,16 +20,23 @@ export default function ContactPage() {
     setError(null);
     
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json"
         },
-        body: JSON.stringify({ name, email, subject, message }),
+        body: JSON.stringify({
+          access_key: "a2b0bf2d-22be-4ca1-8178-5775f0a0a5b2", // Default/placeholder key for trueclickseo@gmail.com contact submissions
+          name,
+          email,
+          subject: `[My PDF Image Contact] ${subject}`,
+          message
+        }),
       });
       const data = await res.json();
       if (!data.success) {
-        throw new Error(data.error || "Failed to send message.");
+        throw new Error(data.message || "Failed to send message.");
       }
       setSubmitted(true);
       setName("");
