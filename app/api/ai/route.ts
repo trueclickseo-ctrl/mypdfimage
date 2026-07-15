@@ -1,5 +1,18 @@
 import { NextResponse } from "next/server";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: corsHeaders,
+  });
+}
+
 export async function POST(request: Request) {
   try {
     const { prompt, documentText, action } = await request.json();
@@ -59,11 +72,10 @@ Feel free to ask any other questions about the document!`;
       // Simulate a small network delay for realistic visual loading indicators
       await new Promise((resolve) => setTimeout(resolve, 800));
 
-      return NextResponse.json({ success: true, answer, mock: true });
+      return NextResponse.json({ success: true, answer, mock: true }, { headers: corsHeaders });
     }
 
     // Real API integration (if API keys are provided)
-    // Here we can fetch Claude or OpenAI API depending on what is set
     let apiEndpoint = "https://api.anthropic.com/v1/messages";
     let headers: Record<string, string> = {
       "Content-Type": "application/json",
@@ -111,10 +123,10 @@ Feel free to ask any other questions about the document!`;
       answerText = data.content?.[0]?.text || "No response received.";
     }
 
-    return NextResponse.json({ success: true, answer: answerText, mock: false });
+    return NextResponse.json({ success: true, answer: answerText, mock: false }, { headers: corsHeaders });
 
   } catch (error: any) {
     console.error(error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: error.message }, { status: 500, headers: corsHeaders });
   }
 }

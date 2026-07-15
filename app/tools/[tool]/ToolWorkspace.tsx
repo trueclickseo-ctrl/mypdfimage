@@ -1204,7 +1204,7 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
         case "ai-pdf-summarizer":
         case "summarize-pdf": {
           const text = await extractPdfText();
-          const res = await fetch("/api/ai", {
+          const res = await fetch("https://mypdfimage.vercel.app/api/ai", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ prompt: "Summarize this document", documentText: text, action: "summarize" })
@@ -1221,7 +1221,7 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
 
         case "translate-pdf": {
           const text = await extractPdfText();
-          const res = await fetch("/api/ai", {
+          const res = await fetch("https://mypdfimage.vercel.app/api/ai", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ prompt: `Translate to ${targetLang}`, documentText: text, action: "translate" })
@@ -1238,7 +1238,7 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
 
         case "invoice-to-excel": {
           const text = await extractPdfText();
-          const res = await fetch("/api/ai", {
+          const res = await fetch("https://mypdfimage.vercel.app/api/ai", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ prompt: "Extract invoice rows and tables to Excel format", documentText: text, action: "review" })
@@ -1255,7 +1255,7 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
 
         case "tender-rfp-parser": {
           const text = await extractPdfText();
-          const res = await fetch("/api/ai", {
+          const res = await fetch("https://mypdfimage.vercel.app/api/ai", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ prompt: "Parse RFP contract requirements, dates, and scope details", documentText: text, action: "review" })
@@ -1272,7 +1272,7 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
 
         case "legal-doc-comparison": {
           const text = await extractPdfText();
-          const res = await fetch("/api/ai", {
+          const res = await fetch("https://mypdfimage.vercel.app/api/ai", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ prompt: "Compare legal document paragraphs and identify differences", documentText: text, action: "review" })
@@ -1289,7 +1289,7 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
 
         case "bank-statement-to-excel": {
           const text = await extractPdfText();
-          const res = await fetch("/api/ai", {
+          const res = await fetch("https://mypdfimage.vercel.app/api/ai", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ prompt: "Extract bank statement table headers and transaction rows", documentText: text, action: "review" })
@@ -1306,7 +1306,7 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
 
         case "resume-parser": {
           const text = await extractPdfText();
-          const res = await fetch("/api/ai", {
+          const res = await fetch("https://mypdfimage.vercel.app/api/ai", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ prompt: "Parse candidate contact info, educational history, work experience, and core skills from CV", documentText: text, action: "review" })
@@ -1331,7 +1331,7 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
         case "pdf-contract-analyzer":
         case "review-pdf": {
           const text = await extractPdfText();
-          const res = await fetch("/api/ai", {
+          const res = await fetch("https://mypdfimage.vercel.app/api/ai", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ prompt: "Review contract", documentText: text, action: "review" })
@@ -1566,7 +1566,7 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
 
     try {
       const text = await extractPdfText();
-      const res = await fetch("/api/ai", {
+      const res = await fetch("https://mypdfimage.vercel.app/api/ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: userMsg, documentText: text, action: "chat" })
