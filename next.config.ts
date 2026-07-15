@@ -1,10 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export",
-  images: {
-    unoptimized: true,
-  },
+  output: "standalone",
   webpack: (config, { isServer }) => {
     // Ignore node-canvas issues in server environment
     if (isServer) {
