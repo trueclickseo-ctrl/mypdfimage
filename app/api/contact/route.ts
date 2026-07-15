@@ -18,10 +18,10 @@ export async function POST(req: Request) {
       recipient: "trueclickseo@gmail.com"
     };
 
-    // Print to Vercel console logs (always visible in your Vercel Dashboard logs tab!)
+    // Print to server console logs
     console.log(`[CONTACT FORM INQUIRY]:`, messageData);
 
-    // If SMTP Env Variables are configured in Vercel, send the actual email!
+    // If SMTP Env Variables are configured, send the actual email!
     const smtpHost = process.env.SMTP_HOST || "smtp.gmail.com";
     const smtpPort = Number(process.env.SMTP_PORT) || 465;
     const smtpUser = process.env.SMTP_USER;
