@@ -33,7 +33,7 @@ export default function Footer() {
             </div>
 
             <div style={styles.linksCol}>
-              <h4 style={styles.colTitle}>Security & AI</h4>
+              <h4 style={styles.colTitle}>Security</h4>
               <Link href="/tools/lock-pdf" style={styles.link}>Lock PDF</Link>
               <Link href="/tools/unlock-pdf" style={styles.link}>Unlock PDF</Link>
 

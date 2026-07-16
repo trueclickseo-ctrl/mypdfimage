@@ -32,7 +32,7 @@ interface Tool {
   id: string;
   name: string;
   description: string;
-  category: "organize" | "convert" | "security" | "optimize" | "ai" | "image";
+  category: "organize" | "convert" | "security" | "optimize" | "image";
   icon: React.ReactNode;
   href: string;
   popular?: boolean;
@@ -94,6 +94,10 @@ export default function Home() {
       popular: true
     },
     {
+      id: "ocr-pdf",
+      name: "OCR PDF",
+      description: "Use OCR scanners to extract text layouts from scanned documents.",
+      category: "optimize",
       icon: <Sparkles size={24} />,
       href: "/tools/ocr-pdf",
       popular: true
@@ -236,14 +240,6 @@ export default function Home() {
       href: "/tools/invoice-to-excel"
     },
     {
-      id: "tender-rfp-parser",
-      name: "Tender/RFP Parser",
-      description: "Parse proposal documents to highlight timelines and scopes.",
-      category: "ai",
-      icon: <Sparkles size={24} />,
-      href: "/tools/tender-rfp-parser"
-    },
-    {
       id: "legal-doc-comparison",
       name: "Legal Comparison",
       description: "Compare legal document paragraphs and identify text diffs.",
@@ -362,7 +358,6 @@ export default function Home() {
 
   const categories = [
     { id: "all", name: "All Tools" },
-    { id: "ai", name: "AI Suite" },
     { id: "organize", name: "Organize" },
     { id: "convert", name: "Convert" },
     { id: "security", name: "Security" },

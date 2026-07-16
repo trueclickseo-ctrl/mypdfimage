@@ -30,7 +30,7 @@ interface Tool {
   id: string;
   name: string;
   description: string;
-  category: "organize" | "convert" | "security" | "optimize" | "ai" | "image";
+  category: "organize" | "convert" | "security" | "optimize" | "image";
   icon: React.ReactNode;
   href: string;
   popular?: boolean;

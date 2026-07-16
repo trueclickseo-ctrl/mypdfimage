@@ -54,9 +54,9 @@ export default function RootLayout({
         </Head>
         <body suppressHydrationWarning>
           <div className="glow-bg" suppressHydrationWarning></div>
-          <Header suppressHydrationWarning />
+          <Header />
           <main style={{ minHeight: "calc(100vh - 72px - 280px)" }} suppressHydrationWarning>{children}</main>
-          <Footer suppressHydrationWarning />
+          <Footer />
         </body>
     </html>
   );

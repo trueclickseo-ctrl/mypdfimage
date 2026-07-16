@@ -76,7 +76,7 @@ export default function AboutPage() {
       fontSize: "14px",
       color: "#6b7280",
     },
-  };
+  } as const;
 
   const team = [
     { name: "Alex Patel", role: "Founder & Chief Engineer", img: "/logo_icon.jpg" },

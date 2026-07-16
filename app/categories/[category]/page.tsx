@@ -26,8 +26,7 @@ export function generateStaticParams() {
     { category: "convert" },
     { category: "organize" },
     { category: "security" },
-    { category: "optimize" },
-    { category: "ai" }
+    { category: "optimize" }
   ];
 }
 
@@ -63,12 +62,7 @@ const categoryInfoMap: { [key: string]: CategoryInfo } = {
     seoTitle: "Optimize and OCR PDF Online - PDFVerse",
     seoDescription: "Optimize PDF files. Compress documents or extract text characters locally via Tesseract WebAssembly OCR."
   },
-  "ai": {
-    name: "AI Suite Platform",
-    description: "Analyze legal documents, chat dynamically with PDF contents, and summarize pages using Claude-powered intelligence.",
-    seoTitle: "AI PDF Suite Online - PDFVerse",
-    seoDescription: "Analyze documents using generative AI. Chat with PDFs, summarize pages, review contracts, and translate text instantly."
-  }
+
 };
 
 interface Tool {

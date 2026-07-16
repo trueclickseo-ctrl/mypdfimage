@@ -28,8 +28,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "convert",
     "organize",
     "security",
-    "optimize",
-    "ai"
+    "optimize"
   ];
 
   const guides = [
