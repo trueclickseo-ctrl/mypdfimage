@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  experimental: {
+    cpus: 1,
+  },
   webpack: (config, { isServer }) => {
     // Ignore node-canvas issues in server environment
     if (isServer) {

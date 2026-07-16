@@ -35,6 +35,9 @@ export async function generateMetadata({ params }: { params: Promise<{ tool: str
     title,
     description,
     keywords: `${slug.replace(/-/g, " ")}, free ${slug.replace(/-/g, " ")}, online ${slug.replace(/-/g, " ")}, my pdf image`,
+    alternates: {
+      canonical: `https://www.mypdfimage.com/tools/${slug}`,
+    },
   };
 }
 

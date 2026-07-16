@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Head from "next/head";
-import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "My PDF Image - Free Online PDF & Image Tools Suite",
@@ -17,6 +15,12 @@ export const metadata: Metadata = {
     icon: "/logo_icon.jpg",
     shortcut: "/logo_icon.jpg",
     apple: "/logo_icon.jpg",
+  },
+  alternates: {
+    canonical: "https://www.mypdfimage.com",
+  },
+  verification: {
+    google: "YOUR_GOOGLE_VERIFICATION_TOKEN",
   }
 };
 
@@ -27,7 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-        <Head>
+        <head>
           {/* Font preloads */}
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -46,12 +50,10 @@ export default function RootLayout({
               }
             })
           }} />
-          <meta name="google-site-verification" content="YOUR_GOOGLE_VERIFICATION_TOKEN" />
-          <link rel="canonical" href="https://www.mypdfimage.com" />
-          <Script id="theme-script" strategy="beforeInteractive" dangerouslySetInnerHTML={{
+          <script id="theme-script" dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',t)}catch(e){}})();`,
           }} />
-        </Head>
+        </head>
         <body suppressHydrationWarning>
           <div className="glow-bg" suppressHydrationWarning></div>
           <Header />
