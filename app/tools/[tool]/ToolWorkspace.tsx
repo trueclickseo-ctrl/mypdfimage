@@ -34,6 +34,8 @@ import {
   AlertCircle
 } from "lucide-react";
 import Link from "next/link";
+import Head from "next/head";
+import RelatedTools from "@/app/components/RelatedTools";
 import { PDFDocument, rgb, degrees } from "pdf-lib";
 import { 
   getPdfJs, 
@@ -275,20 +277,7 @@ const toolInfoMap: { [key: string]: ToolInfo } = {
       { q: "What is the maximum file size supported?", a: "Up to 50MB files are supported. Text is extracted locally and processed safely." }
     ]
   },
-  "translate-pdf": {
-    name: "PDF Translator",
-    description: "Translate your PDF layout and pages to 10+ selected languages.",
-    seoTitle: "AI PDF Translator - Translate PDFs Online",
-    seoDescription: "Translate PDF files to other languages online. Keep original meanings intact. AI powered translations.",
-    instructions: [
-      "Upload your PDF file.",
-      "Select your target language (e.g. Spanish, French, Chinese).",
-      "Click 'Translate PDF' to generate the translation."
-    ],
-    faq: [
-      { q: "Which languages are supported?", a: "We support English, Spanish, French, German, Italian, Chinese, Japanese, Korean, Portuguese, and Russian." }
-    ]
-  },
+
   "review-pdf": {
     name: "AI Contract Review",
     description: "Scan legal documents to detect liability issues, risks, and missing clauses.",
@@ -607,8 +596,8 @@ const toolInfoMap: { [key: string]: ToolInfo } = {
   "resize-image-to-20kb": {
     name: "Resize Image to 20KB",
     description: "Compress and scale your photo to be exactly under 20KB for official uploads.",
-    seoTitle: "Resize Photo to 20KB Online - Compress Image to 20KB",
-    seoDescription: "Compress and resize images to under 20KB online. Perfect for PAN card, signature, and passport photo uploads.",
+    seoTitle: "Resize Photo to 20KB Online - SSC Photo Resizer",
+    seoDescription: "Compress and resize images to under 20KB for SSC photo uploads, PAN card, signature, and passport photos.",
     instructions: [
       "Upload your photo or signature image.",
       "Click 'Compress to 20KB'.",
@@ -635,7 +624,14 @@ const toolInfoMap: { [key: string]: ToolInfo } = {
 };
 
 export default function ToolWorkspace({ params }: { params: Promise<{ tool: string }> }) {
+  let schema = {};
+  // schema will be populated after activeTool is resolved
+
   const [tool, setTool] = useState<string>("");
+
+  // Insert JSON‑LD schema into the page head
+  const jsonLd = JSON.stringify(schema);
+
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -1614,10 +1610,12 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
 
   return (
     <div style={styles.page}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
-      />
+      <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
+        />
+      </Head>
       <div className="container" style={styles.container}>
         <Link href="/" style={styles.backLink}>
           <ArrowLeft size={16} />
@@ -1627,9 +1625,9 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
         <div style={styles.intro}>
           <h1 style={styles.title}>{activeTool.name}</h1>
           <p style={styles.description}>{activeTool.description}</p>
-        </div>
-
-        <div style={styles.usageBanner}>
+          </div>
+          <RelatedTools currentTool={tool} />
+          <div style={styles.usageBanner}>
           <AlertCircle size={16} />
           <span>
             {isPro 

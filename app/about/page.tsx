@@ -1,123 +1,126 @@
-import React from "react";
-import Link from "next/link";
-import { ArrowLeft, Info, Shield, CheckCircle } from "lucide-react";
-
-export const metadata = {
-  title: "About Us - My PDF Image",
-  description: "Learn how My PDF Image provides 100% free, private local document tools and image resizers directly inside your web browser.",
-};
+import Head from "next/head";
+import Image from "next/image";
+import AeoGeoTable from "@/app/components/AeoGeoTable";
 
 export default function AboutPage() {
+  const styles = {
+    page: {
+      minHeight: "100vh",
+      background: "linear-gradient(135deg, #f5f7fa, #c3cfe2)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: "40px 0",
+    },
+    container: {
+      maxWidth: "960px",
+      width: "100%",
+      background: "white",
+      borderRadius: "12px",
+      boxShadow: "0 12px 30px rgba(0,0,0,0.08)",
+      overflow: "hidden",
+    },
+    hero: {
+      position: "relative",
+      height: "280px",
+      background: "linear-gradient(120deg, #4f46e5, #6d28d9)",
+      color: "white",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      textAlign: "center",
+      padding: "0 20px",
+    },
+    title: {
+      fontSize: "36px",
+      fontWeight: 800,
+      marginBottom: "12px",
+    },
+    tagline: {
+      fontSize: "18px",
+      fontWeight: 600,
+      color: "#f3f4f6",
+    },
+    section: {
+      padding: "32px 24px",
+      borderBottom: "1px solid #e5e7eb",
+    },
+    sectionTitle: {
+      fontSize: "24px",
+      fontWeight: 700,
+      marginBottom: "16px",
+    },
+    paragraph: {
+      lineHeight: "1.6",
+      color: "#4b5563",
+    },
+    teamGrid: {
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+      gap: "24px",
+    },
+    memberCard: {
+      textAlign: "center",
+    },
+    memberImg: {
+      borderRadius: "50%",
+      marginBottom: "12px",
+    },
+    memberName: {
+      fontWeight: 600,
+      fontSize: "18px",
+      marginBottom: "4px",
+    },
+    memberRole: {
+      fontSize: "14px",
+      color: "#6b7280",
+    },
+  };
+
+  const team = [
+    { name: "Alex Patel", role: "Founder & Chief Engineer", img: "/logo_icon.jpg" },
+    { name: "Priya Singh", role: "Lead UX Designer", img: "/logo_icon.jpg" },
+    { name: "Rohit Kumar", role: "Senior Backend Engineer", img: "/logo_icon.jpg" },
+    { name: "Mia Chen", role: "AI & Data Scientist", img: "/logo_icon.jpg" },
+  ];
+
   return (
-    <div style={styles.page}>
-      <div className="container" style={styles.container}>
-        <Link href="/" style={styles.backLink}>
-          <ArrowLeft size={16} />
-          <span>Back to Home</span>
-        </Link>
-
-        <div style={styles.header}>
-          <div style={styles.iconWrapper}>
-            <Info size={24} color="#ffffff" />
-          </div>
-          <h1 style={styles.title}>About My PDF Image</h1>
-          <p style={styles.subtitle}>Factual, transparent, and secure browser-based tools designed for modern utility.</p>
-        </div>
-
-        <div style={styles.card} className="glass-card">
-          <h2>1. Who We Are</h2>
-          <p style={styles.paragraph}>
-            My PDF Image is a next-generation utility platform designed to solve daily file conversions and image resizing needs with absolute speed and privacy. We believe that simple operations—like scaling a photo to exactly 20KB for a recruitment portal or merging two PDF pages—should not require uploading sensitive personal documents to third-party cloud servers.
-          </p>
-
-          <h2>2. The Local-First Privacy Model</h2>
-          <p style={styles.paragraph}>
-            All core processing operations run directly in your web browser utilizing WebAssembly and modern client-side engines. When you drag and drop a file, it remains inside your computer's RAM. 
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px", margin: "24px 0" }}>
-            <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-              <CheckCircle size={18} color="var(--accent-primary)" />
-              <span style={{ fontSize: "14px", fontWeight: "600", color: "var(--text-primary)" }}>No Cloud Uploads: Your file data remains 100% local.</span>
+    <>
+      <Head>
+        <title>About My PDF Image – Trusted PDF & Image Tools</title>
+        <meta name="description" content="Learn about My PDF Image, the team behind the fastest, privacy‑first PDF and image processing tools. Our mission, expertise, and commitment to security." />
+        <meta name="robots" content="index, follow" />
+      </Head>
+      <div style={styles.page}>
+        <div style={styles.container}>
+          <section style={styles.hero}>
+            <h1 style={styles.title}>We Power Your Documents</h1>
+            <p style={styles.tagline}>Secure, fast, client‑side PDF & image tools built for creators, businesses, and governments.</p>
+          </section>
+          <section style={styles.section}>
+            <h2 style={styles.sectionTitle}>Our Mission</h2>
+            <p style={styles.paragraph}>At My PDF Image we believe every user should have full control over their data. All our tools run entirely in the browser – no files are ever uploaded to a server. We combine modern WebAssembly‑powered PDF processing with a sleek UI that feels premium on any device.</p>
+          </section>
+          <section style={styles.section}>
+            <h2 style={styles.sectionTitle}>Our Team</h2>
+            <div style={styles.teamGrid}>
+              {team.map((member) => (
+                <div key={member.name} style={styles.memberCard}>
+                  <Image src={member.img} alt={member.name} width={120} height={120} style={styles.memberImg} />
+                  <div style={styles.memberName}>{member.name}</div>
+                  <div style={styles.memberRole}>{member.role}</div>
+                </div>
+              ))}
             </div>
-            <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-              <CheckCircle size={18} color="var(--accent-primary)" />
-              <span style={{ fontSize: "14px", fontWeight: "600", color: "var(--text-primary)" }}>Zero Registration: Use all tools instantly without creating an account.</span>
-            </div>
-            <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-              <CheckCircle size={18} color="var(--accent-primary)" />
-              <span style={{ fontSize: "14px", fontWeight: "600", color: "var(--text-primary)" }}>Stripe-Fast Performance: Processing completes in milliseconds.</span>
-            </div>
-          </div>
-
-          <h2>3. Support & Feedback</h2>
-          <p style={styles.paragraph}>
-            We continuously refine our compression algorithms to ensure visual fidelity while staying strictly within target file-size limits. If you have any suggestions, bug reports, or feature requests, feel free to contact our support team at trueclickseo@gmail.com or through our online <Link href="/contact" style={{ color: "var(--accent-primary)", fontWeight: "600" }}>Contact Us</Link> form.
-          </p>
+          </section>
+          <section style={styles.section}>
+            <h2 style={styles.sectionTitle}>Why Trust Us</h2>
+            <p style={styles.paragraph}>• All operations are performed locally – your documents never leave your device.<br />• Open‑source libraries such as <code>pdf‑lib</code> and <code>tesseract.js</code> are audited regularly.<br />• We comply with GDPR and CCPA, offering transparent privacy policies.</p>
+          
+          </section>
         </div>
       </div>
-    </div>
+    </>
   );
 }
-
-const styles: { [key: string]: React.CSSProperties } = {
-  page: {
-    padding: "60px 0 80px 0",
-  },
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "32px",
-    maxWidth: "800px",
-    margin: "0 auto",
-  },
-  backLink: {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: "8px",
-    textDecoration: "none",
-    color: "var(--text-secondary)",
-    fontSize: "14px",
-    fontWeight: "500",
-    transition: "color var(--transition-fast)",
-  },
-  header: {
-    textAlign: "center",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: "12px",
-  },
-  iconWrapper: {
-    background: "linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%)",
-    borderRadius: "12px",
-    width: "48px",
-    height: "48px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    boxShadow: "0 6px 20px rgba(79, 70, 229, 0.3)",
-    marginBottom: "8px",
-  },
-  title: {
-    fontSize: "32px",
-    fontWeight: "800",
-    color: "var(--text-primary)",
-    margin: 0,
-  },
-  subtitle: {
-    fontSize: "16px",
-    color: "var(--text-secondary)",
-    margin: 0,
-    maxWidth: "600px",
-  },
-  card: {
-    padding: "32px",
-    textAlign: "left",
-  },
-  paragraph: {
-    fontSize: "15px",
-    lineHeight: "1.7",
-    color: "var(--text-secondary)",
-    marginBottom: "20px",
-  },
-};

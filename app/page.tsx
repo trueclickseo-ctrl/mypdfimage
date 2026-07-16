@@ -94,37 +94,6 @@ export default function Home() {
       popular: true
     },
     {
-      id: "chat-pdf",
-      name: "Chat with PDF",
-      description: "Ask questions, get answers, and extract facts from your PDF instantly.",
-      category: "ai",
-      icon: <MessageSquare size={24} />,
-      href: "/tools/chat-pdf",
-      popular: true
-    },
-    {
-      id: "summarize-pdf",
-      name: "PDF Summarizer",
-      description: "Generate structured summaries and bullet points of long PDFs.",
-      category: "ai",
-      icon: <FileText size={24} />,
-      href: "/tools/summarize-pdf",
-      popular: true
-    },
-    {
-      id: "review-pdf",
-      name: "AI Contract Review",
-      description: "Analyze contracts automatically to discover risk clauses and warnings.",
-      category: "ai",
-      icon: <ShieldCheck size={24} />,
-      href: "/tools/review-pdf",
-      popular: true
-    },
-    {
-      id: "ocr-pdf",
-      name: "OCR PDF",
-      description: "Use OCR scanners to extract text layouts from scanned documents.",
-      category: "optimize",
       icon: <Sparkles size={24} />,
       href: "/tools/ocr-pdf",
       popular: true
@@ -187,14 +156,6 @@ export default function Home() {
       href: "/tools/rotate-pdf"
     },
     {
-      id: "organize-pdf",
-      name: "Organize PDF",
-      description: "Delete pages, reorder pages, and sort pages in your PDF file.",
-      category: "organize",
-      icon: <Layers size={24} />,
-      href: "/tools/organize-pdf"
-    },
-    {
       id: "add-password",
       name: "Add Password",
       description: "Encrypt your PDF with a strong password to protect sensitive data.",
@@ -235,15 +196,6 @@ export default function Home() {
       href: "/tools/page-numbers"
     },
     {
-      id: "pdf-editor",
-      name: "PDF Editor",
-      description: "Edit PDF files by adding text annotations, custom markings, or shapes.",
-      category: "organize",
-      icon: <Layers size={24} />,
-      href: "/tools/pdf-editor",
-      popular: true
-    },
-    {
       id: "esign-pdf",
       name: "eSign PDF",
       description: "Sign PDF documents digitally using custom drawn or uploaded signatures.",
@@ -276,24 +228,6 @@ export default function Home() {
       href: "/tools/image-to-pdf"
     },
     {
-      id: "ai-pdf-summarizer",
-      name: "AI PDF Summarizer",
-      description: "Summarize PDF documents using advanced AI models.",
-      category: "ai",
-      icon: <Sparkles size={24} />,
-      href: "/tools/ai-pdf-summarizer",
-      popular: true
-    },
-    {
-      id: "pdf-contract-analyzer",
-      name: "PDF Contract Analyzer",
-      description: "Review legal contracts and detect obligations and liabilities.",
-      category: "ai",
-      icon: <ShieldCheck size={24} />,
-      href: "/tools/pdf-contract-analyzer",
-      popular: true
-    },
-    {
       id: "invoice-to-excel",
       name: "Invoice to Excel",
       description: "Extract invoice table data details to structured Excel rows.",
@@ -318,28 +252,12 @@ export default function Home() {
       href: "/tools/legal-doc-comparison"
     },
     {
-      id: "ocr-urdu-arabic",
-      name: "OCR Urdu & Arabic",
-      description: "Optical Character Recognition for Arabic and Urdu PDF files.",
-      category: "optimize",
-      icon: <Sparkles size={24} />,
-      href: "/tools/ocr-urdu-arabic"
-    },
-    {
       id: "bank-statement-to-excel",
       name: "Bank Statement to Excel",
       description: "Extract bank statement transactions into editable spreadsheet rows.",
       category: "convert",
       icon: <FileSpreadsheet size={24} />,
       href: "/tools/bank-statement-to-excel"
-    },
-    {
-      id: "resume-parser",
-      name: "Resume Parser SaaS",
-      description: "Extract CV profiles, skill lists, and career history using AI.",
-      category: "ai",
-      icon: <Sparkles size={24} />,
-      href: "/tools/resume-parser"
     },
     {
       id: "pdf-extraction-api",

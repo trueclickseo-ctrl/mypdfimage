@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Head from "next/head";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "My PDF Image - Free Online PDF & Image Tools Suite",
@@ -25,26 +27,37 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var theme = localStorage.getItem('theme') || 'dark';
-                  document.documentElement.setAttribute('data-theme', theme);
-                } catch (e) {}
-              })();
-            `,
-          }}
-        />
-      </head>
-      <body>
-        <div className="glow-bg"></div>
-        <Header />
-        <main style={{ minHeight: "calc(100vh - 72px - 280px)" }}>{children}</main>
-        <Footer />
-      </body>
+        <Head>
+          {/* Font preloads */}
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+          {/* WebSite schema for SEO */}
+          <script type="application/ld+json" dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "My PDF Image",
+              "url": "https://www.mypdfimage.com",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://www.mypdfimage.com/search?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+              }
+            })
+          }} />
+          <meta name="google-site-verification" content="YOUR_GOOGLE_VERIFICATION_TOKEN" />
+          <link rel="canonical" href="https://www.mypdfimage.com" />
+          <Script id="theme-script" strategy="beforeInteractive" dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',t)}catch(e){}})();`,
+          }} />
+        </Head>
+        <body suppressHydrationWarning>
+          <div className="glow-bg" suppressHydrationWarning></div>
+          <Header suppressHydrationWarning />
+          <main style={{ minHeight: "calc(100vh - 72px - 280px)" }} suppressHydrationWarning>{children}</main>
+          <Footer suppressHydrationWarning />
+        </body>
     </html>
   );
 }
