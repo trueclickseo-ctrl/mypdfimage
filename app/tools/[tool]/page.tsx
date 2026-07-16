@@ -54,7 +54,7 @@ export function generateStaticParams() {
     { tool: "sign-pdf" },
     { tool: "chat-pdf" },
     { tool: "summarize-pdf" },
-    { tool: "translate-pdf" },
+
     { tool: "review-pdf" },
     { tool: "ocr-pdf" },
     { tool: "excel-to-pdf" },

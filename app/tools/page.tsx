@@ -68,41 +68,9 @@ export default function ToolsIndex() {
       href: "/tools/compress-pdf",
       popular: true
     },
-    {
-      id: "chat-pdf",
-      name: "Chat with PDF",
-      description: "Ask questions, get answers, and extract facts from your PDF instantly.",
-      category: "ai",
-      icon: <MessageSquare size={24} />,
-      href: "/tools/chat-pdf",
-      popular: true
-    },
-    {
-      id: "summarize-pdf",
-      name: "PDF Summarizer",
-      description: "Generate structured summaries and bullet points of long PDFs.",
-      category: "ai",
-      icon: <FileText size={24} />,
-      href: "/tools/summarize-pdf",
-      popular: true
-    },
-    {
-      id: "translate-pdf",
-      name: "PDF Translator",
-      description: "Translate PDF page text to 10+ selected languages accurately.",
-      category: "ai",
-      icon: <Languages size={24} />,
-      href: "/tools/translate-pdf"
-    },
-    {
-      id: "review-pdf",
-      name: "AI Contract Review",
-      description: "Analyze contracts automatically to discover risk clauses and warnings.",
-      category: "ai",
-      icon: <ShieldCheck size={24} />,
-      href: "/tools/review-pdf",
-      popular: true
-    },
+
+
+
     {
       id: "ocr-pdf",
       name: "OCR PDF",
@@ -217,15 +185,7 @@ export default function ToolsIndex() {
       icon: <Layers size={24} />,
       href: "/tools/page-numbers"
     },
-    {
-      id: "pdf-editor",
-      name: "PDF Editor",
-      description: "Edit PDF files by adding text annotations, custom markings, or shapes.",
-      category: "organize",
-      icon: <Layers size={24} />,
-      href: "/tools/pdf-editor",
-      popular: true
-    },
+
     {
       id: "esign-pdf",
       name: "eSign PDF",
@@ -258,24 +218,8 @@ export default function ToolsIndex() {
       icon: <ImageIcon size={24} />,
       href: "/tools/image-to-pdf"
     },
-    {
-      id: "ai-pdf-summarizer",
-      name: "AI PDF Summarizer",
-      description: "Summarize PDF documents using advanced AI models.",
-      category: "ai",
-      icon: <Sparkles size={24} />,
-      href: "/tools/ai-pdf-summarizer",
-      popular: true
-    },
-    {
-      id: "pdf-contract-analyzer",
-      name: "PDF Contract Analyzer",
-      description: "Review legal contracts and detect obligations and liabilities.",
-      category: "ai",
-      icon: <ShieldCheck size={24} />,
-      href: "/tools/pdf-contract-analyzer",
-      popular: true
-    },
+
+
     {
       id: "invoice-to-excel",
       name: "Invoice to Excel",
@@ -285,14 +229,6 @@ export default function ToolsIndex() {
       href: "/tools/invoice-to-excel"
     },
     {
-      id: "tender-rfp-parser",
-      name: "Tender/RFP Parser",
-      description: "Parse proposal documents to highlight timelines and scopes.",
-      category: "ai",
-      icon: <Sparkles size={24} />,
-      href: "/tools/tender-rfp-parser"
-    },
-    {
       id: "legal-doc-comparison",
       name: "Legal Comparison",
       description: "Compare legal document paragraphs and identify text diffs.",
@@ -300,14 +236,7 @@ export default function ToolsIndex() {
       icon: <Layers size={24} />,
       href: "/tools/legal-doc-comparison"
     },
-    {
-      id: "ocr-urdu-arabic",
-      name: "OCR Urdu & Arabic",
-      description: "Optical Character Recognition for Arabic and Urdu PDF files.",
-      category: "optimize",
-      icon: <Sparkles size={24} />,
-      href: "/tools/ocr-urdu-arabic"
-    },
+
     {
       id: "bank-statement-to-excel",
       name: "Bank Statement to Excel",
@@ -316,14 +245,7 @@ export default function ToolsIndex() {
       icon: <FileSpreadsheet size={24} />,
       href: "/tools/bank-statement-to-excel"
     },
-    {
-      id: "resume-parser",
-      name: "Resume Parser SaaS",
-      description: "Extract CV profiles, skill lists, and career history using AI.",
-      category: "ai",
-      icon: <Sparkles size={24} />,
-      href: "/tools/resume-parser"
-    },
+
     {
       id: "pdf-extraction-api",
       name: "Extraction API",
@@ -427,7 +349,6 @@ export default function ToolsIndex() {
 
   const categories = [
     { id: "all", name: "All Tools" },
-    { id: "ai", name: "AI Suite" },
     { id: "organize", name: "Organize" },
     { id: "convert", name: "Convert" },
     { id: "security", name: "Security" },

@@ -5,8 +5,8 @@ import { decryptPDF } from "@pdfsmaller/pdf-decrypt";
 // Initialize PDF.js worker
 export async function getPdfJs() {
   const pdfjs = await import("pdfjs-dist");
-  // Set worker Src locally to ensure offline compatibility and match version exactly
-  pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
+  // Load worker from CDN for reliable hosting compatibility
+  pdfjs.GlobalWorkerOptions.workerSrc = "https://unpkg.com/pdfjs-dist@6.1.200/build/pdf.worker.min.mjs";
   return pdfjs;
 }
 

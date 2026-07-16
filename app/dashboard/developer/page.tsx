@@ -154,7 +154,7 @@ export default function DeveloperDashboard() {
                         </span>
                       </div>
                       <p style={styles.logDetail}>{log.details}</p>
-                      <span style={styles.logTime}>{new Date(log.timestamp).toLocaleTimeString()}</span>
+                      <span style={styles.logTime}>{log.timestamp.split('T')[1].split('.')[0]}</span>
                     </div>
                   ))
                 )}

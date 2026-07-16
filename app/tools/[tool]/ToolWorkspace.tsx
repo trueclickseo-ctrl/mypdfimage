@@ -34,6 +34,8 @@ import {
   AlertCircle
 } from "lucide-react";
 import Link from "next/link";
+import Head from "next/head";
+import RelatedTools from "@/app/components/RelatedTools";
 import { PDFDocument, rgb, degrees } from "pdf-lib";
 import { 
   getPdfJs, 
@@ -275,20 +277,7 @@ const toolInfoMap: { [key: string]: ToolInfo } = {
       { q: "What is the maximum file size supported?", a: "Up to 50MB files are supported. Text is extracted locally and processed safely." }
     ]
   },
-  "translate-pdf": {
-    name: "PDF Translator",
-    description: "Translate your PDF layout and pages to 10+ selected languages.",
-    seoTitle: "AI PDF Translator - Translate PDFs Online",
-    seoDescription: "Translate PDF files to other languages online. Keep original meanings intact. AI powered translations.",
-    instructions: [
-      "Upload your PDF file.",
-      "Select your target language (e.g. Spanish, French, Chinese).",
-      "Click 'Translate PDF' to generate the translation."
-    ],
-    faq: [
-      { q: "Which languages are supported?", a: "We support English, Spanish, French, German, Italian, Chinese, Japanese, Korean, Portuguese, and Russian." }
-    ]
-  },
+
   "review-pdf": {
     name: "AI Contract Review",
     description: "Scan legal documents to detect liability issues, risks, and missing clauses.",
@@ -607,8 +596,8 @@ const toolInfoMap: { [key: string]: ToolInfo } = {
   "resize-image-to-20kb": {
     name: "Resize Image to 20KB",
     description: "Compress and scale your photo to be exactly under 20KB for official uploads.",
-    seoTitle: "Resize Photo to 20KB Online - Compress Image to 20KB",
-    seoDescription: "Compress and resize images to under 20KB online. Perfect for PAN card, signature, and passport photo uploads.",
+    seoTitle: "Resize Photo to 20KB Online - SSC Photo Resizer",
+    seoDescription: "Compress and resize images to under 20KB for SSC photo uploads, PAN card, signature, and passport photos.",
     instructions: [
       "Upload your photo or signature image.",
       "Click 'Compress to 20KB'.",
@@ -635,7 +624,14 @@ const toolInfoMap: { [key: string]: ToolInfo } = {
 };
 
 export default function ToolWorkspace({ params }: { params: Promise<{ tool: string }> }) {
+  let schema = {};
+  // schema will be populated after activeTool is resolved
+
   const [tool, setTool] = useState<string>("");
+
+  // Insert JSON‑LD schema into the page head
+  const jsonLd = JSON.stringify(schema);
+
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -643,14 +639,17 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
   const [error, setError] = useState<string | null>(null);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [downloadName, setDownloadName] = useState<string>("");
+    const [downloadUrls, setDownloadUrls] = useState<string[]>([]);
+    const [downloadNames, setDownloadNames] = useState<string[]>([]);
 
   // Tool specific configurations
   const [pageRange, setPageRange] = useState("1-3");
+  const [pagesPerSplit, setPagesPerSplit] = useState(1);
   const [compressLevel, setCompressLevel] = useState<"low" | "medium" | "high">("medium");
   const [password, setPassword] = useState("");
   const [jpgMargin, setJpgMargin] = useState<number>(0);
   const [jpgOrientation, setJpgOrientation] = useState<"portrait" | "landscape">("portrait");
-  const [targetLang, setTargetLang] = useState("Spanish");
+
   const [ocrLang, setOcrLang] = useState("eng");
 
   // Watermark PDF states
@@ -1045,6 +1044,8 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
     setIsDone(false);
     setError(null);
     setDownloadUrl(null);
+    setDownloadUrls([]);
+    setDownloadNames([]);
     setPdfPages([]);
     setSignatureImg(null);
     setChatHistory([]);
@@ -1089,6 +1090,11 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
+  // Rotate all pages left/right
+  const rotateAll = (delta: number) => {
+    setPdfPages(prev => prev.map(p => ({ ...p, rotation: (p.rotation + delta + 360) % 360 })));
   };
 
   const saveSignature = () => {
@@ -1184,11 +1190,36 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
           outputName = "merged_documents.pdf";
           break;
           
-        case "split-pdf":
-          const splits = await splitPDF(files[0], pageRange);
-          outputBytes = splits[0].bytes;
-          outputName = splits[0].name;
-          break;
+        case "split-pdf": {
+          let splits: { name: string; bytes: Uint8Array }[] = [];
+          if (pageRange && pageRange.trim() !== "") {
+            splits = await splitPDF(files[0], pageRange);
+          } else {
+            // Generate ranges based on pagesPerSplit
+            const totalPages = pdfPages.length;
+            const ranges = [];
+            for (let i = 1; i <= totalPages; i += pagesPerSplit) {
+              const end = Math.min(i + pagesPerSplit - 1, totalPages);
+              ranges.push(`${i}-${end}`);
+            }
+            for (const range of ranges) {
+              const part = await splitPDF(files[0], range);
+              splits = splits.concat(part);
+            }
+          }
+          // Prepare download URLs for each split file
+          const urls = splits.map((s) => {
+            const blob = new Blob([s.bytes as any], { type: "application/pdf" });
+            return URL.createObjectURL(blob);
+          });
+          setDownloadUrls(urls);
+          setDownloadNames(splits.map((s) => s.name));
+          setIsDone(true);
+          incrementUsage();
+          confetti();
+          setIsProcessing(false);
+          return;
+        }
           
         case "compress-pdf":
           outputBytes = await compressPDF(files[0], compressLevel);
@@ -1246,17 +1277,6 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
         case "summarize-pdf": {
           const text = await extractPdfText();
           const answer = await callAI("Summarize this document", text, "summarize");
-          setAiResponse(answer);
-          setIsDone(true);
-          incrementUsage();
-          confetti();
-          setIsProcessing(false);
-          return;
-        }
-
-        case "translate-pdf": {
-          const text = await extractPdfText();
-          const answer = await callAI(`Translate to ${targetLang}`, text, "translate");
           setAiResponse(answer);
           setIsDone(true);
           incrementUsage();
@@ -1590,10 +1610,12 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
 
   return (
     <div style={styles.page}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
-      />
+      <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
+        />
+      </Head>
       <div className="container" style={styles.container}>
         <Link href="/" style={styles.backLink}>
           <ArrowLeft size={16} />
@@ -1603,9 +1625,9 @@ export default function ToolWorkspace({ params }: { params: Promise<{ tool: stri
         <div style={styles.intro}>
           <h1 style={styles.title}>{activeTool.name}</h1>
           <p style={styles.description}>{activeTool.description}</p>
-        </div>
-
-        <div style={styles.usageBanner}>
+          </div>
+          <RelatedTools currentTool={tool} />
+          <div style={styles.usageBanner}>
           <AlertCircle size={16} />
           <span>
             {isPro 
@@ -1800,11 +1822,19 @@ fetch('http://localhost:3000/api/v1/ocr', {
                 {tool === "split-pdf" && (
                   <div style={styles.inputGroup}>
                     <label style={styles.label}>Extract Page Ranges:</label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       value={pageRange}
                       onChange={(e) => setPageRange(e.target.value)}
                       placeholder="e.g. 1-3, 5"
+                      style={styles.textInput}
+                    />
+                    <label style={styles.label}>Pages per Split:</label>
+                    <input
+                      type="number"
+                      min={1}
+                      value={pagesPerSplit}
+                      onChange={(e) => setPagesPerSplit(parseInt(e.target.value) || 1)}
                       style={styles.textInput}
                     />
                   </div>
@@ -1992,25 +2022,6 @@ fetch('http://localhost:3000/api/v1/ocr', {
                   </div>
                 )}
 
-                {tool === "translate-pdf" && (
-                  <div style={styles.inputGroup}>
-                    <label style={styles.label}>Select Target Language:</label>
-                    <select 
-                      value={targetLang} 
-                      onChange={(e) => setTargetLang(e.target.value)}
-                      style={styles.select}
-                    >
-                      <option value="Spanish">Spanish</option>
-                      <option value="French">French</option>
-                      <option value="German">German</option>
-                      <option value="Italian">Italian</option>
-                      <option value="Chinese">Chinese</option>
-                      <option value="Japanese">Japanese</option>
-                      <option value="Russian">Russian</option>
-                    </select>
-                  </div>
-                )}
-
                 {(tool === "ocr-pdf" || tool === "ocr-urdu-arabic") && (
                   <div style={styles.inputGroup}>
                     <label style={styles.label}>OCR Language Core:</label>
@@ -2141,8 +2152,8 @@ fetch('http://localhost:3000/api/v1/ocr', {
                   <div style={styles.inlineConfig}>
                     <div style={styles.inputGroup}>
                       <label style={styles.label}>Page Number Format:</label>
-                      <select 
-                        value={pageNumFormat} 
+                      <select
+                        value={pageNumFormat}
                         onChange={(e) => setPageNumFormat(e.target.value)}
                         style={styles.select}
                       >
@@ -2153,8 +2164,8 @@ fetch('http://localhost:3000/api/v1/ocr', {
                     </div>
                     <div style={styles.inputGroup}>
                       <label style={styles.label}>Placement Position:</label>
-                      <select 
-                        value={pageNumPosition} 
+                      <select
+                        value={pageNumPosition}
                         onChange={(e) => setPageNumPosition(e.target.value as any)}
                         style={styles.select}
                       >
@@ -2167,7 +2178,11 @@ fetch('http://localhost:3000/api/v1/ocr', {
 
                 {tool === "rotate-pdf" && pdfPages.length > 0 && (
                   <div style={styles.previewContainer}>
-                    <label style={styles.label}>Rotate Pages (Click thumbnail to rotate):</label>
+                    <label style={styles.label}>Rotate Pages:</label>
+                    <div style={styles.rotateButtonGroup}>
+                      <button onClick={() => rotateAll(-90)} className="btn btn-secondary">Rotate Left</button>
+                      <button onClick={() => rotateAll(90)} className="btn btn-secondary">Rotate Right</button>
+                    </div>
                     <div style={styles.previewGrid}>
                       {pdfPages.map((page) => (
                         <div 
@@ -2408,6 +2423,25 @@ fetch('http://localhost:3000/api/v1/ocr', {
                 </a>
               </div>
 
+              <div style={{ display: "flex", gap: "12px", marginTop: "12px" }}>
+                <button onClick={handleReset} className="btn btn-secondary">Convert another file</button>
+                <Link href="/" className="btn btn-secondary">Go to Homepage</Link>
+              </div>
+            </div>
+          )}
+
+          {isDone && downloadUrls.length > 0 && (
+            <div style={styles.successScreen} className="animate-fade-in">
+              <CheckCircle2 size={64} color="var(--success)" />
+              <h2>Files Ready for Download!</h2>
+              <p>Multiple split parts are available.</p>
+              <div className="download-list" style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                {downloadUrls.map((url, idx) => (
+                  <a key={idx} href={url} download={downloadNames[idx] || `part_${idx + 1}.pdf`} className="btn btn-primary">
+                    Download {downloadNames[idx] ?? `Part ${idx + 1}`}
+                  </a>
+                ))}
+              </div>
               <div style={{ display: "flex", gap: "12px", marginTop: "12px" }}>
                 <button onClick={handleReset} className="btn btn-secondary">Convert another file</button>
                 <Link href="/" className="btn btn-secondary">Go to Homepage</Link>
@@ -2742,6 +2776,22 @@ const styles: { [key: string]: React.CSSProperties } = {
     justifyContent: "center",
     color: "var(--text-secondary)",
   },
+  rotateButtonGroup: {
+    display: "flex",
+    gap: "8px",
+    marginTop: "8px",
+  },
+  rotateBtn: {
+    width: "64px",
+    height: "64px",
+    borderRadius: "16px",
+    background: "var(--bg-tertiary)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "var(--text-secondary)",
+  },
+
   fileListWrapper: {
     display: "flex",
     flexDirection: "column",
@@ -2919,7 +2969,7 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   sigCanvas: {
     border: "1px dashed var(--border-color)",
-    background: "#000",
+    background: "#fff",
     marginTop: "16px",
     borderRadius: "8px",
     cursor: "crosshair",
@@ -3080,5 +3130,5 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
   faqAnswer: {
     fontSize: "14px",
-  }
+  },
 };

@@ -13,7 +13,7 @@ export default function Footer() {
               <Link href="/tools/merge-pdf" style={styles.link}>Merge PDF</Link>
               <Link href="/tools/split-pdf" style={styles.link}>Split PDF</Link>
               <Link href="/tools/compress-pdf" style={styles.link}>Compress PDF</Link>
-              <Link href="/tools/pdf-editor" style={styles.link}>PDF Editor</Link>
+
               <Link href="/tools/esign-pdf" style={styles.link}>eSign PDF</Link>
               <Link href="/tools/watermark-pdf" style={styles.link}>Watermark PDF</Link>
               <Link href="/tools/page-numbers" style={styles.link}>Add Page Numbers</Link>
@@ -36,12 +36,7 @@ export default function Footer() {
               <h4 style={styles.colTitle}>Security & AI</h4>
               <Link href="/tools/lock-pdf" style={styles.link}>Lock PDF</Link>
               <Link href="/tools/unlock-pdf" style={styles.link}>Unlock PDF</Link>
-              <Link href="/tools/chat-pdf" style={styles.link}>Chat with PDF</Link>
-              <Link href="/tools/ai-pdf-summarizer" style={styles.link}>AI PDF Summarizer</Link>
-              <Link href="/tools/pdf-contract-analyzer" style={styles.link}>PDF Contract Analyzer</Link>
-              <Link href="/tools/tender-rfp-parser" style={styles.link}>Tender/RFP Parser</Link>
-              <Link href="/tools/resume-parser" style={styles.link}>Resume Parser SaaS</Link>
-              <Link href="/tools/ocr-urdu-arabic" style={styles.link}>OCR Urdu & Arabic</Link>
+
             </div>
             
             <div style={styles.linksCol}>

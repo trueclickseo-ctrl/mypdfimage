@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+# Allow all content
+Sitemap: https://www.mypdfimage.com/sitemap.xml
